@@ -3,5 +3,5 @@ package com.example.demo.domain.review.repository;
 import com.example.demo.domain.review.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewQueryDsl {
 }
