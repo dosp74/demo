@@ -1,34 +1,25 @@
 package com.example.demo.domain.review.controller;
 
-import com.example.demo.domain.review.dto.ReviewResponseDto;
-import com.example.demo.domain.review.service.ReviewService;
+import com.example.demo.domain.review.dto.req.ReviewReqDTO;
+import com.example.demo.domain.review.dto.res.ReviewResDTO;
+import com.example.demo.domain.review.service.command.ReviewCommandService;
 import com.example.demo.global.apiPayload.ApiResponse;
 import com.example.demo.global.apiPayload.code.GeneralSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/reviews")
+@RequestMapping("/api/stores")
 @RequiredArgsConstructor
 public class ReviewController {
-    private final ReviewService reviewService;
+    private final ReviewCommandService reviewCommandService;
 
-    @GetMapping("/test")
-    public ApiResponse<List<ReviewResponseDto>> getMyReviews(
-            @RequestParam Long memberId,
-            @RequestParam(required = false) String storeName,
-            @RequestParam(required = false) Integer starGroup
+    @PostMapping("/{storeId}/reviews")
+    public ApiResponse<ReviewResDTO.CreateDTO> createReview(
+            @PathVariable Long storeId,
+            @RequestBody @Valid ReviewReqDTO.CreateDTO dto
     ) {
-        List<ReviewResponseDto> reviews = reviewService.getMyReviews(memberId, storeName, starGroup);
-
-        return ApiResponse.onSuccess(
-                GeneralSuccessCode.OK,
-                reviews
-        );
+        return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, reviewCommandService.createReview(storeId, dto));
     }
 }
