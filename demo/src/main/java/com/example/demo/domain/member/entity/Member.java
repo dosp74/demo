@@ -46,6 +46,7 @@ public class Member extends BaseEntity {
     private String phoneNumber;
 
     @Column(nullable = false)
+    @Builder.Default
     private Integer point = 0;
 
     @Column(name = "social_uid")
@@ -53,11 +54,12 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "social_type")
-    private SocialType socialType;
+    private SocialType socialType = SocialType.LOCAL;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status;
+    @Builder.Default
+    private Status status = Status.ACTIVE;
 
     @Column(name = "inactive_date")
     private LocalDateTime inactiveDate;
@@ -66,5 +68,6 @@ public class Member extends BaseEntity {
     private List<MemberTerm> memberTerms = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MemberPreferFood> memberPreferFoods = new ArrayList<>();
 }
