@@ -1,6 +1,8 @@
 package com.example.demo.domain.mission.repository;
 
+import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.mission.dto.MemberMissionResponseDto;
+import com.example.demo.domain.mission.entity.Mission;
 import com.example.demo.domain.mission.entity.mapping.MemberMission;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
     // 진행중 미션(isComplete = false)
@@ -41,4 +44,6 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
             @Param("memberId") Long memberId,
             Pageable pageable
     );
+
+    Optional<MemberMission> findByMemberAndMission(Member member, Mission mission);
 }

@@ -13,4 +13,11 @@ public class MissionResDTO {
             Integer point,
             LocalDate deadline
     ) {}
+
+    @Builder
+    public record MemberMissionChallengeDTO(
+            Long memberMissionId,
+            Long missionId,
+            Boolean isComplete
+    ) {}
 }
