@@ -46,4 +46,12 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
     );
 
     Optional<MemberMission> findByMemberAndMission(Member member, Mission mission);
+
+    @Query("""
+        SELECT COUNT(mm)
+        FROM MemberMission mm
+        WHERE mm.member.id = :memberId
+            AND mm.isComplete = false
+    """)
+    int countOngoingMissions(@Param("memberId") Long memberId);
 }
