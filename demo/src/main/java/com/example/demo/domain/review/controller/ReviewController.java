@@ -5,6 +5,7 @@ import com.example.demo.domain.review.dto.res.ReviewResDTO;
 import com.example.demo.domain.review.exception.code.ReviewSuccessCode;
 import com.example.demo.domain.review.service.command.ReviewCommandService;
 import com.example.demo.domain.review.service.query.ReviewQueryService;
+import com.example.demo.global.annotation.ValidPage;
 import com.example.demo.global.apiPayload.ApiResponse;
 import com.example.demo.global.apiPayload.code.GeneralSuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,5 +45,23 @@ public class ReviewController implements ReviewControllerDocs {
         ReviewSuccessCode code = ReviewSuccessCode.FOUND;
 
         return ApiResponse.onSuccess(code, reviewQueryService.findReview(storeName, page));
+    }
+
+    @Operation(
+            summary = "내가 작성한 리뷰 목록 조회 API By 제이",
+            description = "사용자가 작성한 리뷰 목록을 페이지네이션으로 조회합니다."
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "page 형식 오류, 실패")
+    })
+    @GetMapping("/api/members/{memberId}/reviews")
+    public ApiResponse<ReviewResDTO.ReviewPreViewListDTO> getMyReviews(
+            @PathVariable Long memberId,
+            @ValidPage @RequestParam String page // null, 0, 음수 검증을 위해 String 자료형 사용
+    ) {
+        int pageNumber = Integer.parseInt(page);
+
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, reviewQueryService.findMyReviews(memberId, pageNumber));
     }
 }

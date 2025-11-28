@@ -36,4 +36,12 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
         // 결과를 응답 DTO로 변환한다(컨버터 이용)
         return ReviewConverter.toReviewPreviewListDTO(result);
     }
+
+    @Override
+    public ReviewResDTO.ReviewPreViewListDTO findMyReviews(Long memberId, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+        Page<Review> result = reviewRepository.findAllByMember_Id(memberId, pageRequest);
+
+        return ReviewConverter.toReviewPreviewListDTO(result);
+    }
 }
