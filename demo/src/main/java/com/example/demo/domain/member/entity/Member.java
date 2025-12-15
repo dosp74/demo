@@ -6,6 +6,7 @@ import com.example.demo.domain.member.enums.Address;
 import com.example.demo.domain.member.enums.Gender;
 import com.example.demo.domain.member.enums.SocialType;
 import com.example.demo.domain.member.enums.Status;
+import com.example.demo.global.auth.enums.Role;
 import com.example.demo.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,8 +40,14 @@ public class Member extends BaseEntity {
     @Column(name = "detail_address", length = 100)
     private String detailAddress;
 
-    @Column(unique = true, length = 100)
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
